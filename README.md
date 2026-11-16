@@ -47,7 +47,7 @@ src/main/
 | :--- | :--- | :--- | :--- | :--- |
 | **1단계** | **Stored XSS** | `innerHTML`로 게시글을 렌더링하여 본문 내 악성 스크립트 태그가 브라우저에서 실행됨 | `document.createElement` 및 `textContent` API를 사용해 입력값을 순수 문자열로 처리 | 스크립트 실행 차단 및 텍스트 그대로 출력 확인 |
 | **2단계** | **파라미터 변조** | API 직접 호출 시 공백이나 과도한 길이의 문자열이 검증 없이 DB에 저장됨 | DTO/Entity에 `@NotBlank`, `@Size` 적용 및 Controller `@Valid` 활성화 | 비정상 요청 시 `400 Bad Request` 반환 및 차단 |
-| **3단계** | **인가 누락 (IDOR) & 민감정보 노출** | 게시글 번호(`id`)만으로 타인의 글 삭제 가능, 평문 비밀번호 저장 및 응답 노출 위험 | `BCrypt` 단방향 해시 암호화 저장, 삭제 시 Request Body로 비밀번호 대조, `@JsonProperty(WRITE_ONLY)` 적용 | 비밀번호 불일치 시 `403 Forbidden` 차단, 목록 조회 응답에서 비밀번호 필드 은닉 |
+| **3단계** | **인가 누락 (IDOR) & 민감정보 노출** | 별도의 인증 없이 타인의 글 삭제 가능, 평문 비밀번호 저장 및 응답 노출 위험 | `BCrypt` 단방향 해시 암호화 저장, 삭제 시 Request Body로 비밀번호 대조, `@JsonProperty(WRITE_ONLY)` 적용 | 비밀번호 불일치 시 `403 Forbidden` 차단, 목록 조회 응답에서 비밀번호 필드 은닉 |
 
 ---
 
